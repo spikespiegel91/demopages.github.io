@@ -2003,13 +2003,16 @@ function animate(t) {
 requestAnimationFrame(animate);
 
 // ── WEB AUDIO ────────────────────────────────────────────────────────────────
-let _actx = null;
+let _actx = null, _lastPopTime = 0;
 function _getActx() {
     if (!_actx) _actx = new (window.AudioContext || window.webkitAudioContext)();
     if (_actx.state === 'suspended') _actx.resume();
     return _actx;
 }
 function playPop(startHz = 660, endHz = 180, dur = 0.07) {
+    const now = performance.now();
+    if (now - _lastPopTime < 55) return; // cap at ~18 pops/sec to avoid node accumulation
+    _lastPopTime = now;
     try {
         const ctx = _getActx(), t = ctx.currentTime;
         const osc = ctx.createOscillator(), gain = ctx.createGain();
