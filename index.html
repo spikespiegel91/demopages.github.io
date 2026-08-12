@@ -139,6 +139,10 @@ canvas{display:block;}
 #leaderboard.visible{opacity:1;pointer-events:auto;}
 #leaderboard h2{color:#ff44ff;text-align:center;font-size:14px;letter-spacing:5px;
     text-shadow:0 0 12px #ff00ff;margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid #ff44ff33;}
+.lb-close{position:absolute;top:10px;right:14px;background:none;border:none;
+    color:#ff44ff;font-size:18px;cursor:pointer;line-height:1;padding:2px 6px;
+    text-shadow:0 0 8px #ff00ff;transition:color .2s;}
+.lb-close:hover{color:#ffffff;}
 .lb-cur{background:#ff00ff0a;border:1px solid #ff44ff33;border-radius:3px;padding:10px 14px;margin-bottom:12px;}
 .lb-rank-tag{text-align:center;font-size:11px;color:#ff44ff;letter-spacing:3px;margin-bottom:5px;}
 .lb-score-big{color:#ffff44;font-size:26px;text-align:center;text-shadow:0 0 14px #ffff00;margin:4px 0 8px;}
@@ -2201,6 +2205,7 @@ function showLeaderboard() {
     try { localStorage.setItem('kiwimon_lb', JSON.stringify(scores)); } catch(e) {}
     const lbEl = document.getElementById('leaderboard');
     lbEl.innerHTML = `
+        <button class="lb-close" onclick="hideLeaderboard()">✕</button>
         <h2>⚡ BATTLE RESULTS ⚡</h2>
         <div class="lb-cur">
             <div class="lb-rank-tag">${rank === 1 ? '🏆 NEW RECORD!' : `RANK #${rank}`}</div>
