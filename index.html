@@ -1967,6 +1967,7 @@ function animate(t) {
             btnEl.textContent = '🔄 RESTART';
             btnEl.style.pointerEvents = 'auto';
             setTimeout(() => showLeaderboard(), 2200);
+            _lbTimer = setTimeout(() => showLeaderboard(), 2200);
         }
     }
 
@@ -2090,6 +2091,7 @@ function playSplash() {
 
 // ── 8-BIT BATTLE BGM ─────────────────────────────────────────────────────
 let _bgmActive = false, _bgmTimer = null, _bgmGain = null, _bgmNoise = null;
+let _lbTimer = null;
 const _BGM_E = 60 / 155 / 2; // eighth note at 155 BPM
 const _BGM_MEL  = [523,784,659,784,523,880,784,698, 659,784,880,1047,988,880,784,659];
 const _BGM_BASS = [131,131, 98, 98,131,131, 87, 87, 131,131, 98,  98,131,131, 87, 87];
@@ -2205,7 +2207,7 @@ function showLeaderboard() {
     try { localStorage.setItem('kiwimon_lb', JSON.stringify(scores)); } catch(e) {}
     const lbEl = document.getElementById('leaderboard');
     lbEl.innerHTML = `
-        <button class="lb-close" onclick="hideLeaderboard()">✕</button>
+        <button class="lb-close">✕</button>
         <h2>⚡ BATTLE RESULTS ⚡</h2>
         <div class="lb-cur">
             <div class="lb-rank-tag">${rank === 1 ? '🏆 NEW RECORD!' : `RANK #${rank}`}</div>
@@ -2229,9 +2231,11 @@ function showLeaderboard() {
             </div>`).join('')}
     `;
     lbEl.classList.add('visible');
+    lbEl.querySelector('.lb-close').addEventListener('click', hideLeaderboard);
 }
 
 function hideLeaderboard() {
+    clearTimeout(_lbTimer); _lbTimer = null;
     document.getElementById('leaderboard').classList.remove('visible');
 }
 
