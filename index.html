@@ -70,6 +70,87 @@ canvas{display:block;}
     text-shadow:0 0 20px #ffff00,0 0 50px #ff8800;
     pointer-events:none;opacity:0;transition:opacity .3s;
 }
+
+#ufo-hud{
+    position:absolute;top:110px;width:100%;text-align:center;
+    pointer-events:none;opacity:0;transition:opacity .5s;
+}
+#ufo-countdown{
+    color:#ff4400;font-size:44px;font-weight:bold;letter-spacing:4px;
+    text-shadow:0 0 20px #ff4400,0 0 50px #ff8800;line-height:1;
+}
+#ufo-score{
+    color:#00ffcc;font-size:13px;letter-spacing:3px;margin-top:6px;
+    text-shadow:0 0 8px #00ffcc;
+}
+#feed-instruct{
+    position:absolute;top:53%;width:100%;text-align:center;
+    color:#ffcc00;font-size:14px;letter-spacing:3px;
+    text-shadow:0 0 12px #ffcc00;
+    pointer-events:none;opacity:0;transition:opacity .6s;
+}
+
+#cake-pile{
+    position:absolute;left:14px;top:50%;transform:translateY(-50%);
+    display:flex;flex-direction:column-reverse;align-items:center;gap:1px;
+    opacity:0;transition:opacity .5s;pointer-events:none;max-height:70vh;overflow:hidden;
+}
+.cake-icon{font-size:20px;line-height:1.1;filter:drop-shadow(0 0 5px #ffaa00);animation:cakePop .25s ease-out;}
+.cake-extra{color:#ffaa00;font-size:11px;letter-spacing:2px;text-shadow:0 0 6px #ffaa00;}
+@keyframes cakePop{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+
+#feed-all-btn{
+    position:absolute;left:14px;bottom:22px;
+    background:transparent;border:1px solid #ffaa00;
+    color:#ffaa00;font-family:'Courier New',monospace;
+    font-size:11px;letter-spacing:3px;padding:6px 14px;
+    cursor:pointer;text-shadow:0 0 8px #ffaa00;
+    box-shadow:0 0 12px #ffaa0044;transition:all .25s;
+    opacity:0;pointer-events:none;
+}
+#feed-all-btn:hover{background:#ffaa0022;box-shadow:0 0 24px #ffaa00aa;}
+
+#bomb-tray{
+    position:absolute;right:14px;bottom:70px;
+    display:flex;flex-direction:column;gap:7px;align-items:center;
+    opacity:0;transition:opacity .5s;
+}
+.bomb-btn{
+    background:transparent;border:1px solid #ff4400;
+    color:#ff4400;font-size:24px;width:46px;height:46px;
+    cursor:pointer;border-radius:6px;
+    text-shadow:0 0 10px #ff4400;box-shadow:0 0 14px #ff440055;
+    transition:all .2s;animation:bombPulse 1.6s ease-in-out infinite;
+}
+.bomb-btn:hover{background:#ff440022;box-shadow:0 0 28px #ff4400cc;transform:scale(1.12);}
+@keyframes bombPulse{0%,100%{box-shadow:0 0 14px #ff440055}50%{box-shadow:0 0 28px #ff4400bb,0 0 48px #ff220055;}}
+#bomb-label{color:#ff4400;font-size:9px;letter-spacing:2px;text-shadow:0 0 6px #ff4400;margin-top:2px;}
+
+#leaderboard{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    background:rgba(0,0,0,.91);
+    border:1px solid #ff44ff;
+    box-shadow:0 0 28px #ff00ff55,0 0 60px #ff00ff22,inset 0 0 20px #ff00ff08;
+    color:#7df9ff;font-family:'Courier New',monospace;
+    width:min(400px,88vw);padding:22px 26px;
+    opacity:0;transition:opacity .9s;pointer-events:none;z-index:50;border-radius:3px;
+}
+#leaderboard.visible{opacity:1;pointer-events:auto;}
+#leaderboard h2{color:#ff44ff;text-align:center;font-size:14px;letter-spacing:5px;
+    text-shadow:0 0 12px #ff00ff;margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid #ff44ff33;}
+.lb-cur{background:#ff00ff0a;border:1px solid #ff44ff33;border-radius:3px;padding:10px 14px;margin-bottom:12px;}
+.lb-rank-tag{text-align:center;font-size:11px;color:#ff44ff;letter-spacing:3px;margin-bottom:5px;}
+.lb-score-big{color:#ffff44;font-size:26px;text-align:center;text-shadow:0 0 14px #ffff00;margin:4px 0 8px;}
+.lb-stat{display:flex;justify-content:space-between;font-size:10px;color:#7df9ff55;margin:3px 0;}
+.lb-stat span:last-child{color:#7df9ff;}
+.lb-sec{font-size:10px;color:#ff44ff;letter-spacing:4px;margin-bottom:6px;}
+.lb-row{display:flex;align-items:center;gap:8px;font-size:10px;padding:4px 0;border-bottom:1px solid #ffffff08;}
+.lb-row.you{background:#ffff4408;border-radius:2px;padding:4px 4px;}
+.lb-pos{width:22px;text-align:center;font-size:13px;}
+.lb-pts{color:#ffff44;flex:1;letter-spacing:1px;}
+.lb-detail{color:#7df9ff44;font-size:9px;}
+.lb-you-tag{color:#00ff88;font-size:9px;letter-spacing:2px;}
 </style>
 </head>
 <body>
@@ -81,9 +162,27 @@ canvas{display:block;}
 <div id="energy-bar"><div id="energy-fill"></div></div>
 <button id="btn">⚡ DIGIVOLVE</button>
 <div id="combo"></div>
+<div id="ufo-hud"><div id="ufo-countdown">10</div><div id="ufo-score"></div></div>
+<div id="feed-instruct">DRAG 🍰 TO KIWIMON · CLICK BUTTON WHEN DONE</div>
+<div id="cake-pile"></div>
+<button id="feed-all-btn">🍰 FEED ALL!!</button>
+<div id="bomb-tray"><div id="bomb-label">PLASMA BOMBS</div></div>
+<div id="leaderboard"></div>
 
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.168.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.168.0/examples/jsm/"
+  }
+}
+</script>
 <script type="module">
-import * as THREE from 'https://unpkg.com/three@0.168.0/build/three.module.js';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass }    from 'three/addons/postprocessing/RenderPass.js';
+import { ShaderPass }    from 'three/addons/postprocessing/ShaderPass.js';
 
 const scene = new THREE.Scene();
 scene.fog = new THREE.FogExp2(0x2e1800, 0.04);
@@ -95,6 +194,49 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 document.body.appendChild(renderer.domElement);
+
+// ── POST-PROCESS: gravitational lens distortion ─────────────────────────────
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+
+const lensPass = new ShaderPass({
+    uniforms: {
+        tDiffuse: { value: null },
+        center:   { value: new THREE.Vector2(0.5, 0.5) },
+        strength: { value: 0.0 },
+        radius:   { value: 0.15 },
+        innerR:   { value: 0.06 }  // body exclusion zone — no distortion inside kiwimon
+    },
+    vertexShader: `
+        varying vec2 vUv;
+        void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }
+    `,
+    fragmentShader: `
+        uniform sampler2D tDiffuse;
+        uniform vec2  center;
+        uniform float strength;
+        uniform float radius;
+        uniform float innerR;
+        varying vec2 vUv;
+        void main() {
+            vec2  delta = vUv - center;
+            float dist  = length(delta);
+            float pull  = strength * radius / max(dist, 0.003);
+            // Outer falloff: zero beyond 4× radius
+            float outerFade = smoothstep(radius * 4.0, radius * 0.9, dist);
+            // Inner exclusion: zero inside kiwimon body, wider fade zone for large kiwimon
+            float innerFade = smoothstep(innerR * 0.75, innerR * 2.0, dist);
+            pull *= outerFade * innerFade;
+            vec2  dir = delta / max(dist, 0.001);
+            // Chromatic aberration: R/G/B bent by slightly different amounts
+            float r = texture2D(tDiffuse, clamp(vUv - dir * pull * 1.00, 0.001, 0.999)).r;
+            float g = texture2D(tDiffuse, clamp(vUv - dir * pull * 0.97, 0.001, 0.999)).g;
+            float b = texture2D(tDiffuse, clamp(vUv - dir * pull * 0.94, 0.001, 0.999)).b;
+            gl_FragColor = vec4(r, g, b, 1.0);
+        }
+    `
+});
+composer.addPass(lensPass);
 
 // ── LIGHTS ──────────────────────────────────────────────────────────────────
 
@@ -357,8 +499,511 @@ diskColors.forEach((col, i) => {
 
 const bhLight = new THREE.PointLight(0xff4400, 0, 22);
 scene.add(bhLight);
+const kiwiGlowLight = new THREE.PointLight(0x44ff88, 0, 16);
+scene.add(kiwiGlowLight);
+let kiwiRadiation = 0;
 
-// ── EGG ──────────────────────────────────────────────────────────────────────
+// Quasar jet beams — polar columns that grow brighter as kiwimon mutates
+const _jetGeo = new THREE.CylinderGeometry(0.05, 1.0, 22, 8, 1, true);
+const jetMatN = new THREE.MeshBasicMaterial({ color: 0x44ff88, transparent: true, opacity: 0,
+    side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false });
+const jetMatS = jetMatN.clone();
+const kiwiJetN = new THREE.Mesh(_jetGeo, jetMatN);
+const kiwiJetS = new THREE.Mesh(_jetGeo, jetMatS);
+kiwiJetS.rotation.z = Math.PI; // south pole
+kiwiJetN.visible = kiwiJetS.visible = false;
+scene.add(kiwiJetN); scene.add(kiwiJetS);
+
+// ── CHEESECAKE GLB ────────────────────────────────────────────────────────────
+const gltfLoader = new GLTFLoader();
+let cheesecakeTemplate = null;
+let cheesecakeNormScale = 0.55; // updated after load based on actual model bounds
+gltfLoader.load('assets/cheese_cake.glb', gltf => {
+    // Normalize to ~1.1 scene units regardless of how the model was exported
+    const box = new THREE.Box3().setFromObject(gltf.scene);
+    const maxDim = Math.max(...box.getSize(new THREE.Vector3()).toArray());
+    cheesecakeNormScale = maxDim > 0.001 ? 1.1 / maxDim : 1.0;
+    // Center the pivot
+    const center = box.getCenter(new THREE.Vector3());
+    gltf.scene.position.sub(center.multiplyScalar(cheesecakeNormScale));
+    gltf.scene.traverse(child => { if (child.isMesh) child.material.needsUpdate = true; });
+    cheesecakeTemplate = gltf;
+});
+
+// ── UFO MINIGAME ──────────────────────────────────────────────────────────────
+let ufoGamePhase = 'idle'; // 'idle' | 'playing' | 'feeding' | 'done'
+let ufoCountdown = 10;
+let ufoScore = 0;
+let ufoWave = 0;
+let ufoSpeedMult = 1.0;
+const ufos = [];
+const evilKiwis = [];
+const collectedCakes = [];
+let ufoSpawnTimer = 0;
+let bombCount = 0;
+let preBattleCombo = 0;
+const UFO_MAX = 20;
+const activeLasers = [];
+const ufoExplosions = [];
+const plasmaWaves = [];
+const splashCakes = [];
+let cakesEatenTotal = 0;
+let draggedCake = null;
+const ufoRay = new THREE.Raycaster();
+const ufoMouse = new THREE.Vector2();
+const dragPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+
+const ufoHudEl       = document.getElementById('ufo-hud');
+const ufoCountdownEl  = document.getElementById('ufo-countdown');
+const ufoScoreEl     = document.getElementById('ufo-score');
+const feedInstructEl  = document.getElementById('feed-instruct');
+const cakePileEl     = document.getElementById('cake-pile');
+const feedAllBtnEl   = document.getElementById('feed-all-btn');
+const bombTrayEl     = document.getElementById('bomb-tray');
+
+function updateBombTray() {
+    // Keep the label element, rebuild bomb buttons
+    const label = bombTrayEl.querySelector('#bomb-label');
+    bombTrayEl.innerHTML = '';
+    if (label) bombTrayEl.appendChild(label);
+    bombTrayEl.style.opacity = bombCount > 0 && ufoGamePhase === 'playing' ? '1' : '0';
+    for (let i = 0; i < bombCount; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'bomb-btn'; btn.textContent = '💥';
+        btn.title = 'NUCLEAR PLASMA BOMB — destroys all enemies!';
+        btn.addEventListener('click', () => detonatePlasma());
+        bombTrayEl.insertBefore(btn, label);
+    }
+}
+
+function detonatePlasma() {
+    if (bombCount <= 0 || ufoGamePhase !== 'playing') return;
+    bombCount--;
+    // Destroy every enemy and convert each to a cheesecake
+    [...ufos, ...evilKiwis].forEach(e => { explodeAt(e.position.clone()); scene.remove(e); spawnCheesecake(); ufoScore++; });
+    ufos.length = 0; evilKiwis.length = 0;
+    ufoScoreEl.textContent = `🛸 DEFEATED: ${ufoScore}  ·  🍰 COLLECTED: ${collectedCakes.length}`;
+    updateBombTray();
+    playBoom();
+    // Massive plasma flash
+    flashEl.style.transition = 'opacity 0.02s';
+    flashEl.style.opacity = '1';
+    setTimeout(() => { flashEl.style.transition = 'opacity 2s'; flashEl.style.opacity = '0'; }, 90);
+    // Three expanding plasma rings
+    [0xffffff, 0x00aaff, 0xff44ff].forEach((col, i) => {
+        const ring = new THREE.Mesh(
+            new THREE.TorusGeometry(0.5, 0.25, 8, 80),
+            new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 1,
+                blending: THREE.AdditiveBlending, depthWrite: false })
+        );
+        ring.rotation.x = Math.PI / 2 + i * 0.18;
+        scene.add(ring);
+        plasmaWaves.push({ ring, mat: ring.material, t: 0, delay: i * 0.1 });
+    });
+    for (let i = 0; i < 28; i++) setTimeout(() => spawnLightning(), i * 22);
+}
+
+function updateCakePile() {
+    const n = collectedCakes.length;
+    cakePileEl.innerHTML = '';
+    const show = ufoGamePhase === 'playing' || ufoGamePhase === 'feeding';
+    cakePileEl.style.opacity = (n > 0 && show) ? '1' : '0';
+    const max = Math.min(n, 22);
+    for (let i = 0; i < max; i++) {
+        const s = document.createElement('span');
+        s.className = 'cake-icon'; s.textContent = '🍰';
+        cakePileEl.appendChild(s);
+    }
+    if (n > 22) {
+        const s = document.createElement('span');
+        s.className = 'cake-extra'; s.textContent = `+${n - 22}`;
+        cakePileEl.appendChild(s);
+    }
+}
+
+function feedAll() {
+    const cakes = [...collectedCakes];
+    cakes.forEach((cake, i) => {
+        setTimeout(() => {
+            if (!cake.userData.fed && collectedCakes.includes(cake)) {
+                feedCakeToKiwi(cake);
+            }
+        }, i * 650);
+    });
+}
+
+feedAllBtnEl.addEventListener('click', () => { if (ufoGamePhase === 'feeding') feedAll(); });
+
+function createFallbackCheesecake() {
+    const g = new THREE.Group();
+    g.add(new THREE.Mesh(
+        new THREE.CylinderGeometry(0.6, 0.62, 0.28, 12),
+        new THREE.MeshStandardMaterial({ color: 0xc89040, flatShading: true })
+    ));
+    const filling = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.58, 0.58, 0.22, 12),
+        new THREE.MeshStandardMaterial({ color: 0xfff8e0, flatShading: true })
+    );
+    filling.position.y = 0.25;
+    g.add(filling);
+    const topping = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.5, 0.5, 0.1, 12),
+        new THREE.MeshStandardMaterial({ color: 0xff2244, flatShading: true })
+    );
+    topping.position.y = 0.41;
+    g.add(topping);
+    g.add(new THREE.Mesh(
+        new THREE.SphereGeometry(0.9, 8, 8),
+        new THREE.MeshBasicMaterial({ color: 0xffee44, transparent: true, opacity: 0.14,
+            blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.BackSide })
+    ));
+    return g;
+}
+
+function createUFO() {
+    const g = new THREE.Group();
+    const saucerMat = new THREE.MeshStandardMaterial({ color: 0x99bbee, metalness: 0.85, roughness: 0.15, emissive: 0x001122 });
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.52, 0.2, 16), saucerMat));
+    g.add(new THREE.Mesh(new THREE.TorusGeometry(0.56, 0.07, 8, 24),
+        new THREE.MeshStandardMaterial({ color: 0xbbddff, metalness: 0.9, roughness: 0.1 })));
+    const dome = new THREE.Mesh(
+        new THREE.SphereGeometry(0.3, 14, 8, 0, Math.PI * 2, 0, Math.PI * 0.52),
+        new THREE.MeshStandardMaterial({ color: 0x44ffaa, transparent: true, opacity: 0.72,
+            metalness: 0.3, roughness: 0.1, emissive: 0x003322 })
+    );
+    dome.position.y = 0.1;
+    g.add(dome);
+    const glowRing = new THREE.Mesh(
+        new THREE.TorusGeometry(0.48, 0.055, 8, 32),
+        new THREE.MeshBasicMaterial({ color: 0x00ff88, transparent: true, opacity: 0.9,
+            blending: THREE.AdditiveBlending, depthWrite: false })
+    );
+    glowRing.rotation.x = Math.PI / 2;
+    glowRing.position.y = -0.08;
+    g.add(glowRing);
+    const pilot = new THREE.Mesh(new THREE.SphereGeometry(0.09, 6, 6),
+        new THREE.MeshBasicMaterial({ color: 0x220033 }));
+    pilot.position.y = 0.27;
+    g.add(pilot);
+    // Green outer halo
+    const halo = new THREE.Mesh(
+        new THREE.SphereGeometry(0.92, 12, 10),
+        new THREE.MeshBasicMaterial({ color: 0x00ff55, transparent: true, opacity: 0.2,
+            blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.BackSide })
+    );
+    g.add(halo);
+    // Red saturated enemy-indicator ring
+    const enemyRing = new THREE.Mesh(
+        new THREE.TorusGeometry(0.78, 0.048, 8, 36),
+        new THREE.MeshBasicMaterial({ color: 0xff0011, transparent: true, opacity: 0.92,
+            blending: THREE.AdditiveBlending, depthWrite: false })
+    );
+    enemyRing.rotation.x = Math.PI / 2;
+    g.add(enemyRing);
+    g.userData = {
+        orbitR: 3.8 + Math.random() * 2.4,
+        theta: Math.random() * Math.PI * 2,
+        phi: (Math.random() - 0.5) * 0.7,
+        speed: (0.5 + Math.random() * 0.9) * (Math.random() > 0.5 ? 1 : -1),
+        wobble: Math.random() * Math.PI * 2,
+        halo, enemyRing
+    };
+    return g;
+}
+
+function createEvilKiwi() {
+    const g = new THREE.Group();
+    const bodyMat = new THREE.MeshStandardMaterial({ color: 0xcc0000, flatShading: true, emissive: 0x440000 });
+    g.add(new THREE.Mesh(new THREE.IcosahedronGeometry(0.42, 0), bodyMat));
+    // Belly
+    const belly = new THREE.Mesh(new THREE.IcosahedronGeometry(0.26, 0),
+        new THREE.MeshStandardMaterial({ color: 0x880000, flatShading: true }));
+    belly.scale.set(0.65, 0.75, 0.4); belly.position.z = 0.28; g.add(belly);
+    // Yellow eyes
+    [-0.11, 0.11].forEach(x => {
+        const e = new THREE.Mesh(new THREE.SphereGeometry(0.065, 5, 5),
+            new THREE.MeshBasicMaterial({ color: 0xffff00 }));
+        e.position.set(x, 0.09, 0.38); g.add(e);
+    });
+    // Beak
+    const beak = new THREE.Mesh(new THREE.ConeGeometry(0.07, 0.2, 4),
+        new THREE.MeshStandardMaterial({ color: 0xff4400, flatShading: true }));
+    beak.rotation.x = Math.PI / 2; beak.position.set(0, -0.02, 0.52); g.add(beak);
+    // Red glow halo
+    const halo = new THREE.Mesh(new THREE.SphereGeometry(0.7, 10, 8),
+        new THREE.MeshBasicMaterial({ color: 0xff2200, transparent: true, opacity: 0.22,
+            blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.BackSide }));
+    g.add(halo);
+    // Layered-sinusoid params simulate Perlin-like noise movement
+    g.userData = {
+        p1: Math.random() * Math.PI * 2, p2: Math.random() * Math.PI * 2,
+        p3: Math.random() * Math.PI * 2, p4: Math.random() * Math.PI * 2,
+        f1: 0.25 + Math.random() * 0.3,  f2: 0.6  + Math.random() * 0.5,
+        f3: 1.1  + Math.random() * 0.7,  f4: 0.15 + Math.random() * 0.2,
+        baseR: 6.5 + Math.random() * 3,
+        halo, isEvilKiwi: true
+    };
+    return g;
+}
+
+function fireLaser(from, to) {
+    const geo = new THREE.BufferGeometry().setFromPoints([from.clone(), to.clone()]);
+    const mat  = new THREE.LineBasicMaterial({ color: 0xff3300, transparent: true, opacity: 1,
+        blending: THREE.AdditiveBlending, depthWrite: false });
+    const mat2 = new THREE.LineBasicMaterial({ color: 0xff9900, transparent: true, opacity: 0.5,
+        blending: THREE.AdditiveBlending, depthWrite: false });
+    const line  = new THREE.Line(geo, mat);
+    const line2 = new THREE.Line(geo, mat2);
+    scene.add(line); scene.add(line2);
+    activeLasers.push({ line, line2, mat, mat2, geo, life: 1.0 });
+}
+
+function explodeAt(pos) {
+    const N = 55;
+    const positions = new Float32Array(N * 3);
+    const velocities = [];
+    for (let i = 0; i < N; i++) {
+        positions[i * 3] = pos.x; positions[i * 3 + 1] = pos.y; positions[i * 3 + 2] = pos.z;
+        const speed = 0.05 + Math.random() * 0.1;
+        const th = Math.random() * Math.PI * 2, ph = Math.random() * Math.PI;
+        velocities.push({ x: Math.sin(ph)*Math.cos(th)*speed, y: Math.sin(ph)*Math.sin(th)*speed,
+            z: Math.cos(ph)*speed, life: 1 });
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    const mat = new THREE.PointsMaterial({ size: 0.13, color: 0xff8800,
+        blending: THREE.AdditiveBlending, depthWrite: false, transparent: true });
+    const pts = new THREE.Points(geo, mat);
+    scene.add(pts);
+    const exLight = new THREE.PointLight(0xff8800, 40, 8);
+    exLight.position.copy(pos);
+    scene.add(exLight);
+    ufoExplosions.push({ pts, geo, mat, velocities, t: 0, exLight });
+}
+
+function spawnCheesecake() {
+    const cake = cheesecakeTemplate ? cheesecakeTemplate.scene.clone(true) : createFallbackCheesecake();
+    const baseScale = cheesecakeTemplate ? cheesecakeNormScale : 0.55;
+    cake.userData.baseScale = baseScale;
+    cake.scale.setScalar(0.01); // scales up during emerge
+    const angle = Math.random() * Math.PI * 2;
+    const r = 2.4 + Math.random() * 1.6;
+    const oy = (Math.random() - 0.5) * 1.8;
+    // Start at orbit position so it's never hidden inside the black hole
+    cake.position.set(r * Math.cos(angle), oy, r * Math.sin(angle));
+    cake.userData.orbitAngle = angle;
+    cake.userData.orbitR = r;
+    cake.userData.orbitY = oy;
+    cake.userData.orbitSpeed = (0.22 + Math.random() * 0.18) * (Math.random() > 0.5 ? 1 : -1);
+    cake.userData.emergeT = 0;
+    cake.userData.fed = false;
+    cake.userData.dragging = false;
+    scene.add(cake);
+    collectedCakes.push(cake);
+    updateCakePile();
+}
+
+function feedCakeToKiwi(cake) {
+    cake.userData.fed = true;
+    explodeAt(cake.position.clone());
+    scene.remove(cake);
+    collectedCakes.splice(collectedCakes.indexOf(cake), 1);
+    flashEl.style.transition = 'opacity 0.03s';
+    flashEl.style.opacity = '0.3';
+    setTimeout(() => { flashEl.style.transition = 'opacity 0.5s'; flashEl.style.opacity = '0'; }, 45);
+    kiwiRadiation += 0.1; // unbounded — more cakes = bigger kiwimon
+    cakesEatenTotal++;
+    playNom();
+    if (collectedCakes.length === 0) {
+        statusEl.innerHTML = '<span style="color:#88ff88;text-shadow:0 0 10px #00ff44">KIWIMON IS SATISFIED! 🥝💚</span>';
+    }
+    ufoScoreEl.textContent = `🛸 DEFEATED: ${ufoScore}  ·  🍰 FED: ${ufoScore - collectedCakes.length} / ${ufoScore}`;
+    updateCakePile();
+}
+
+function startUFOMinigame() {
+    ufoGamePhase = 'playing';
+    ufoCountdown = 10;
+    ufoScore = 0;
+    ufoSpawnTimer = 0;
+    ufoHudEl.style.opacity = '1';
+    ufoCountdownEl.textContent = '10';
+    ufoCountdownEl.style.color = '#ff4400';
+    ufoWave = 0;
+    ufoSpeedMult = 1.0;
+    cakesEatenTotal = 0;
+    preBattleCombo = comboCount;
+    bombCount = Math.floor(comboCount / 50); // 1 bomb per 50 pre-battle clicks
+    ufoScoreEl.textContent = '🛸 DEFEATED: 0  ·  🍰 COLLECTED: 0';
+    statusEl.innerHTML = '<span style="color:#ff4400;font-size:13px;letter-spacing:4px;text-shadow:0 0 14px #ff4400">🛸 DEFEND THE BLACK HOLE — CLICK UFOs!</span>';
+    for (let i = 0; i < 3; i++) { const u = createUFO(); scene.add(u); ufos.push(u); }
+    cakePileEl.style.opacity = '0';
+    updateBombTray();
+    // Slide to top-down battle view and lock orbit during the minigame
+    orbitLocked = true;
+    camTargetPhi = 0.12; camTargetTheta = 0; camTargetRadius = 19;
+    camAnimating = true; camOnArrival = null;
+    startBattleMusic();
+}
+
+function endUFOMinigame() {
+    stopBattleMusic();
+    ufoGamePhase = 'feeding';
+    [...ufos].forEach(u => { explodeAt(u.position.clone()); scene.remove(u); });
+    ufos.length = 0;
+    [...evilKiwis].forEach(ek => { explodeAt(ek.position.clone()); scene.remove(ek); });
+    evilKiwis.length = 0;
+    bombTrayEl.style.opacity = '0';
+    ufoCountdownEl.textContent = '⏰';
+    ufoCountdownEl.style.color = '#ffcc00';
+    kiwi.visible = true;
+    kiwi.position.set(0, -1.5, 0);
+    kiwi.scale.setScalar(0.9);
+    kiwi.rotation.set(0, 0, 0);
+    const n = collectedCakes.length;
+    if (n > 0) {
+        statusEl.innerHTML = `<span style="color:#ffcc00;font-size:13px;letter-spacing:3px;text-shadow:0 0 10px #ffcc00">🍰 ${n} CHEESECAKE${n > 1 ? 'S' : ''} COLLECTED! DRAG OR FEED ALL!</span>`;
+        feedInstructEl.style.opacity = '1';
+        feedAllBtnEl.style.opacity = '1'; feedAllBtnEl.style.pointerEvents = 'auto';
+    } else {
+        statusEl.innerHTML = '<span style="color:#ff8888">NO CAKES COLLECTED... CLICK CONTINUE</span>';
+    }
+    updateCakePile();
+    btnEl.textContent = '✅ DONE FEEDING';
+    btnEl.style.pointerEvents = 'auto';
+    btnEl.onclick = () => { btnEl.onclick = null; finishMinigameAndContinue(); };
+    // Return to frontal view; unlock orbit once camera arrives so user can drag cakes freely
+    camTargetPhi = Math.PI * 0.45; camTargetTheta = 0; camTargetRadius = 8;
+    camAnimating = true; camOnArrival = () => { orbitLocked = false; };
+}
+
+function finishMinigameAndContinue() {
+    stopBattleMusic();
+    ufoGamePhase = 'done';
+    orbitLocked = false; camAnimating = false;
+    ufoHudEl.style.opacity = '0';
+    feedInstructEl.style.opacity = '0';
+    feedAllBtnEl.style.opacity = '0'; feedAllBtnEl.style.pointerEvents = 'none';
+    cakePileEl.style.opacity = '0';
+    kiwiRadiation = 0; kiwiGlowLight.intensity = 0;
+    jetMatN.opacity = 0; jetMatS.opacity = 0; kiwiJetN.visible = kiwiJetS.visible = false;
+    activeLasers.forEach(l => { scene.remove(l.line); scene.remove(l.line2); l.geo.dispose(); l.mat.dispose(); l.mat2.dispose(); });
+    activeLasers.length = 0;
+    ufoExplosions.forEach(ex => { scene.remove(ex.pts); ex.geo.dispose(); ex.mat.dispose(); scene.remove(ex.exLight); });
+    ufoExplosions.length = 0;
+    plasmaWaves.forEach(pw => { scene.remove(pw.ring); pw.ring.geometry.dispose(); pw.mat.dispose(); });
+    plasmaWaves.length = 0;
+    evilKiwis.forEach(ek => scene.remove(ek)); evilKiwis.length = 0;
+    collectedCakes.forEach(c => scene.remove(c));
+    collectedCakes.length = 0;
+    bombTrayEl.style.opacity = '0'; bombCount = 0;
+    draggedCake = null;
+    kiwi.visible = false;
+    kiwi.position.set(0, 0, 0);
+    flashEl.style.transition = 'opacity 0.04s';
+    flashEl.style.opacity = '.8';
+    setTimeout(() => { flashEl.style.transition = 'opacity 2.2s'; flashEl.style.opacity = '0'; }, 70);
+    blackHoleGroup.visible = false;
+    bhLight.intensity = 0;
+    eggMesh.visible = true; eggAura.visible = true;
+    eggMesh.scale.set(.01, .015, .01); eggMesh.position.set(0, 0, 0); eggMesh.rotation.set(0, 0, 0);
+    eggAura.scale.setScalar(.01); eggAura.position.set(0, 0, 0);
+    orbGroup.children.forEach(o => { o.userData.baseR = 2.5; });
+    gameState = 'egg'; eggT = 0; comboCount = 0; comboTimer = 0; comboEl.style.opacity = '0';
+    statusEl.textContent = 'A NEW EGG HAS APPEARED...';
+    setTimeout(() => { if (gameState === 'egg') statusEl.textContent = 'CLICK TO HATCH'; }, 2800);
+    btnEl.textContent = '🥚 HATCH';
+    btnEl.style.pointerEvents = 'auto';
+}
+
+function showTimePopup(worldPos, text) {
+    const ndc = worldPos.clone().project(camera);
+    const x = (ndc.x * 0.5 + 0.5) * innerWidth;
+    const y = (1 - (ndc.y * 0.5 + 0.5)) * innerHeight;
+    const el = document.createElement('div');
+    el.style.cssText = `position:absolute;left:${x}px;top:${y}px;transform:translate(-50%,-50%);
+        color:#00ff88;font-family:'Courier New',monospace;font-size:17px;font-weight:bold;
+        letter-spacing:2px;text-shadow:0 0 10px #00ff88,0 0 22px #00ff44;
+        pointer-events:none;z-index:200;opacity:1;
+        transition:top 0.9s ease-out,opacity 0.9s ease-out;`;
+    el.textContent = text;
+    document.body.appendChild(el);
+    setTimeout(() => { el.style.top = `${y - 70}px`; el.style.opacity = '0'; }, 40);
+    setTimeout(() => el.remove(), 1050);
+}
+
+// UFO + evil kiwi click — capture phase fires before orbit's click handler
+renderer.domElement.addEventListener('click', e => {
+    if (ufoGamePhase !== 'playing' || didDrag) return;
+    ufoMouse.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+    ufoRay.setFromCamera(ufoMouse, camera);
+    const allEnemies = [...ufos, ...evilKiwis];
+    const meshes = [];
+    allEnemies.forEach(g => g.traverse(ch => { if (ch.isMesh) meshes.push(ch); }));
+    const hits = ufoRay.intersectObjects(meshes);
+    if (!hits.length) return;
+    let obj = hits[0].object;
+    while (obj && !allEnemies.includes(obj)) obj = obj.parent;
+    if (!obj) return;
+    fireLaser(camera.position.clone(), obj.position.clone());
+    explodeAt(obj.position.clone());
+    scene.remove(obj);
+    const _isEvil = evilKiwis.includes(obj);
+    if (!_isEvil) { ufos.splice(ufos.indexOf(obj), 1); playPop(820, 55, 0.055); }
+    else {
+        evilKiwis.splice(evilKiwis.indexOf(obj), 1);
+        ufoCountdown = Math.min(20, ufoCountdown + 1.0); // +1s bonus
+        ufoCountdownEl.style.color = '#00ff88';
+        setTimeout(() => { if (ufoGamePhase==='playing') ufoCountdownEl.style.color = ufoCountdown<=3?'#ff0000':'#ff4400'; }, 700);
+        showTimePopup(obj.position.clone(), '+1.0s ⏱');
+        playPop(520, 80, 0.065);
+    }
+    ufoScore++;
+    spawnCheesecake();
+    ufoScoreEl.textContent = `🛸 DEFEATED: ${ufoScore}  ·  🍰 COLLECTED: ${collectedCakes.length}`;
+    flashEl.style.transition = 'opacity 0.02s';
+    flashEl.style.opacity = '0.12';
+    setTimeout(() => { flashEl.style.transition = 'opacity 0.3s'; flashEl.style.opacity = '0'; }, 30);
+    spawnLightning();
+}, true);
+
+// Cheesecake drag — capture phase so we can block orbit camera
+renderer.domElement.addEventListener('mousedown', e => {
+    if (ufoGamePhase !== 'feeding') return;
+    ufoMouse.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+    ufoRay.setFromCamera(ufoMouse, camera);
+    const meshes = [];
+    collectedCakes.forEach(c => { if (!c.userData.fed) c.traverse(ch => { if (ch.isMesh) meshes.push(ch); }); });
+    if (!meshes.length) return;
+    const hits = ufoRay.intersectObjects(meshes);
+    if (!hits.length) return;
+    let obj = hits[0].object;
+    while (obj && !collectedCakes.includes(obj)) obj = obj.parent;
+    if (!obj || !collectedCakes.includes(obj)) return;
+    draggedCake = obj;
+    draggedCake.userData.dragging = true;
+    dragPlane.setFromNormalAndCoplanarPoint(
+        camera.getWorldDirection(new THREE.Vector3()).negate(), draggedCake.position);
+    e.stopImmediatePropagation(); // prevent orbit mousedown from activating
+}, true);
+
+window.addEventListener('mousemove', e => {
+    if (!draggedCake) return;
+    ufoMouse.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+    ufoRay.setFromCamera(ufoMouse, camera);
+    const target = new THREE.Vector3();
+    if (ufoRay.ray.intersectPlane(dragPlane, target)) draggedCake.position.copy(target);
+}, true);
+
+window.addEventListener('mouseup', () => {
+    if (!draggedCake) return;
+    if (draggedCake.position.distanceTo(kiwi.position) < 2.4) {
+        feedCakeToKiwi(draggedCake);
+    } else {
+        draggedCake.userData.dragging = false;
+    }
+    draggedCake = null;
+}, true);
 
 const eggMat = new THREE.MeshStandardMaterial({ color: 0xfff0e0, flatShading: true, emissive: 0x441100 });
 const eggMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(1.0, 1), eggMat);
@@ -469,6 +1114,10 @@ scene.add(cookieAura);
 let orbitActive = false, orbitLastX = 0, orbitLastY = 0;
 let orbitTheta = 0, orbitPhi = Math.PI * .45, orbitRadius = 8;
 let mouseDownX = 0, mouseDownY = 0, didDrag = false;
+let orbitLocked = false;
+let camTargetPhi = null, camTargetTheta = null, camTargetRadius = null;
+let camAnimating = false, camOnArrival = null;
+function lerpAngle(a, b, t) { let d = b - a; while (d > Math.PI) d -= Math.PI*2; while (d < -Math.PI) d += Math.PI*2; return a + d * t; }
 
 renderer.domElement.addEventListener('mousedown', e => {
     orbitActive = true; didDrag = false;
@@ -477,7 +1126,7 @@ renderer.domElement.addEventListener('mousedown', e => {
 });
 window.addEventListener('mouseup', () => { orbitActive = false; });
 window.addEventListener('mousemove', e => {
-    if (!orbitActive) return;
+    if (!orbitActive || orbitLocked) return;
     if (Math.hypot(e.clientX - mouseDownX, e.clientY - mouseDownY) > 5) didDrag = true;
     const dx = e.clientX - orbitLastX, dy = e.clientY - orbitLastY;
     orbitLastX = e.clientX; orbitLastY = e.clientY;
@@ -485,7 +1134,7 @@ window.addEventListener('mousemove', e => {
     orbitPhi = Math.max(.1, Math.min(Math.PI - .1, orbitPhi - dy * .005));
 });
 renderer.domElement.addEventListener('wheel', e => {
-    orbitRadius = Math.max(3, Math.min(18, orbitRadius + e.deltaY * .01));
+    orbitRadius = Math.max(3, Math.min(55, orbitRadius + e.deltaY * .01));
 }, { passive: true });
 renderer.domElement.addEventListener('click', () => { if (!didDrag) triggerBurst(); });
 window.addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); triggerBurst(); } });
@@ -498,7 +1147,7 @@ renderer.domElement.addEventListener('touchstart', e => {
     orbitActive = true; touchDragged = false;
 }, { passive: true });
 renderer.domElement.addEventListener('touchmove', e => {
-    if (!orbitActive) return;
+    if (!orbitActive || orbitLocked) return;
     if (Math.hypot(e.touches[0].clientX - touchSX, e.touches[0].clientY - touchSY) > 5) touchDragged = true;
     const dx = e.touches[0].clientX - orbitLastX, dy = e.touches[0].clientY - orbitLastY;
     orbitLastX = e.touches[0].clientX; orbitLastY = e.touches[0].clientY;
@@ -517,6 +1166,7 @@ let introComplete = false;
 let comboCount = 0, comboTimer = 0;
 let gameState = 'normal'; // 'normal' | 'ultra-burst' | 'blackhole' | 'egg' | 'cookie-burst' | 'cookie'
 let ultraT = 0, bhT = 0, eggT = 0, cookieBurstT = 0, cookieT = 0;
+let ultraPending = false, ultraPendingTimer = null;
 
 const flashEl  = document.getElementById('flash');
 const statusEl = document.getElementById('status');
@@ -534,9 +1184,15 @@ function triggerBurst() {
     // advance combo before anything else
     comboCount++;
     comboTimer = 2.8;
+    playPop(660, 180, 0.072);
 
-    // ⚡ ULTRA trigger at combo ×10
-    if (comboCount >= 10 && introComplete) { triggerUltraBurst(); return; }
+    // ⚡ At ≥10 clicks, ultra fires 800ms after the LAST click (debounced)
+    if (comboCount >= 10 && introComplete) {
+        ultraPending = true;
+        clearTimeout(ultraPendingTimer);
+        ultraPendingTimer = setTimeout(() => { ultraPending = false; ultraPendingTimer = null; triggerUltraBurst(); }, 800);
+    }
+    // burst animation always plays so every click feels responsive
 
     burstActive = true;
     burstT = 0;
@@ -694,6 +1350,32 @@ function digivolveToLemonCookie() {
 
     btnEl.textContent = '🍋 EVOLVING...';
     btnEl.style.pointerEvents = 'none';
+    // Celebrate every cake kiwimon ate by throwing them all across the scene
+    setTimeout(() => splashCheesecakes(cakesEatenTotal), 200);
+    playSplash();
+}
+
+function splashCheesecakes(count) {
+    const n = Math.min(count, 40);
+    for (let i = 0; i < n; i++) {
+        const cake = cheesecakeTemplate ? cheesecakeTemplate.scene.clone(true) : createFallbackCheesecake();
+        const bs = cheesecakeTemplate ? cheesecakeNormScale : 0.55;
+        cake.userData.baseScale = bs;
+        cake.scale.setScalar(0.01);
+        cake.position.set(0, 0, 0);
+        const speed = 0.05 + Math.random() * 0.1;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = (Math.random() - 0.5) * Math.PI * 0.85;
+        cake.userData.vel = new THREE.Vector3(
+            Math.cos(theta) * Math.cos(phi) * speed,
+            Math.sin(phi) * speed + 0.03,
+            Math.sin(theta) * Math.cos(phi) * speed
+        );
+        cake.userData.spin = (Math.random() - 0.5) * 12;
+        cake.userData.life = 1.0;
+        scene.add(cake);
+        splashCakes.push(cake);
+    }
 }
 
 function resetToKiwimon() {
@@ -701,6 +1383,28 @@ function resetToKiwimon() {
     comboTimer = 0;
     gameState = 'normal';
     introComplete = false;
+    // clean up any leftover minigame objects
+    clearTimeout(ultraPendingTimer); ultraPendingTimer = null; ultraPending = false;
+    orbitLocked = false; camAnimating = false;
+    stopBattleMusic();
+    hideLeaderboard();
+    kiwiRadiation = 0; kiwiGlowLight.intensity = 0;
+    jetMatN.opacity = 0; jetMatS.opacity = 0; kiwiJetN.visible = kiwiJetS.visible = false;
+    ufoSpeedMult = 1.0; bombCount = 0;
+    feedAllBtnEl.style.opacity = '0'; feedAllBtnEl.style.pointerEvents = 'none';
+    bombTrayEl.style.opacity = '0';
+    cakePileEl.style.opacity = '0';
+    ufoGamePhase = 'idle';
+    ufos.forEach(u => scene.remove(u)); ufos.length = 0;
+    evilKiwis.forEach(ek => scene.remove(ek)); evilKiwis.length = 0;
+    plasmaWaves.forEach(pw => { scene.remove(pw.ring); pw.ring.geometry.dispose(); pw.mat.dispose(); });
+    plasmaWaves.length = 0;
+    splashCakes.forEach(c => scene.remove(c)); splashCakes.length = 0;
+    collectedCakes.forEach(c => scene.remove(c)); collectedCakes.length = 0;
+    activeLasers.forEach(l => { scene.remove(l.line); scene.remove(l.line2); l.geo.dispose(); l.mat.dispose(); l.mat2.dispose(); }); activeLasers.length = 0;
+    ufoExplosions.forEach(ex => { scene.remove(ex.pts); ex.geo.dispose(); ex.mat.dispose(); scene.remove(ex.exLight); }); ufoExplosions.length = 0;
+    draggedCake = null; btnEl.onclick = null;
+    ufoHudEl.style.opacity = '0'; feedInstructEl.style.opacity = '0';
 
     cookieGroup.visible = false;
     cookieAura.visible = false;
@@ -732,6 +1436,7 @@ window.addEventListener('resize', () => {
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth, innerHeight);
+    composer.setSize(innerWidth, innerHeight);
 });
 
 // ── ANIMATE ──────────────────────────────────────────────────────────────────
@@ -744,7 +1449,17 @@ function animate(t) {
     lastFrameTime = t;
     const time = t * .001;
 
-    // orbit camera
+    // orbit camera — lerp toward target when camAnimating
+    if (camAnimating) {
+        orbitPhi    = orbitPhi    + (camTargetPhi    - orbitPhi)    * 0.045;
+        orbitRadius = orbitRadius + (camTargetRadius - orbitRadius) * 0.045;
+        orbitTheta  = lerpAngle(orbitTheta, camTargetTheta, 0.045);
+        if (Math.abs(orbitPhi - camTargetPhi) < 0.004 && Math.abs(orbitRadius - camTargetRadius) < 0.04) {
+            orbitPhi = camTargetPhi; orbitRadius = camTargetRadius; orbitTheta = camTargetTheta;
+            camAnimating = false;
+            if (camOnArrival) { camOnArrival(); camOnArrival = null; }
+        }
+    }
     camera.position.set(
         orbitRadius * Math.sin(orbitPhi) * Math.sin(orbitTheta),
         orbitRadius * Math.cos(orbitPhi),
@@ -926,7 +1641,7 @@ function animate(t) {
 
             gameState = 'blackhole';
             bhT = 0;
-            statusEl.innerHTML = '<span style="color:#ff4400;text-shadow:0 0 12px #ff4400">EVENT HORIZON FORMED</span>';
+            startUFOMinigame();
         }
     }
 
@@ -958,36 +1673,215 @@ function animate(t) {
 
         if (Math.random() < .05) spawnLightning();
 
-        // collapse black hole → spawn egg
-        if (bhT > 4.2) {
-            flashEl.style.transition = 'opacity 0.04s';
-            flashEl.style.opacity = '.8';
-            setTimeout(() => { flashEl.style.transition = 'opacity 2.2s'; flashEl.style.opacity = '0'; }, 70);
+        // ── UFO MINIGAME ─────────────────────────────────────────────────────
+        if (ufoGamePhase === 'playing') {
+            ufoCountdown -= dt;
+            const disp = Math.max(0, Math.ceil(ufoCountdown));
+            ufoCountdownEl.textContent = disp;
+            if (disp <= 3) ufoCountdownEl.style.color = '#ff0000';
+            if (ufoCountdown <= 0) endUFOMinigame();
 
-            blackHoleGroup.visible = false;
-            bhLight.intensity = 0;
+            ufoSpawnTimer += dt;
+            if (ufoSpawnTimer > 2.2 && ufos.length < UFO_MAX) {
+                ufoSpawnTimer = 0;
+                const u = createUFO();
+                u.userData.speed *= ufoSpeedMult;
+                scene.add(u); ufos.push(u);
+            }
 
-            eggMesh.visible = true;
-            eggAura.visible = true;
-            eggMesh.scale.set(.01, .015, .01);
-            eggMesh.position.set(0, 0, 0);
-            eggMesh.rotation.set(0, 0, 0);
-            eggAura.scale.setScalar(.01);
-            eggAura.position.set(0, 0, 0);
-
-            orbGroup.children.forEach(o => { o.userData.baseR = 2.5; });
-
-            gameState = 'egg';
-            eggT = 0;
-            comboCount = 0;
-            comboTimer = 0;
-            comboEl.style.opacity = '0';
-
-            statusEl.textContent = 'A NEW EGG HAS APPEARED...';
-            setTimeout(() => { if (gameState === 'egg') statusEl.textContent = 'CLICK TO HATCH'; }, 2800);
-            btnEl.textContent = '🥚 HATCH';
-            btnEl.style.pointerEvents = 'auto';
+            ufos.forEach(u => {
+                u.userData.theta += dt * u.userData.speed;
+                const r = u.userData.orbitR;
+                const phiW = u.userData.phi + Math.sin(time * 0.8 + u.userData.wobble) * 0.25;
+                u.position.set(
+                    r * Math.cos(u.userData.theta) * Math.cos(phiW),
+                    r * Math.sin(phiW) + Math.sin(time * 1.3 + u.userData.wobble) * 0.4,
+                    r * Math.sin(u.userData.theta) * Math.cos(phiW)
+                );
+                u.rotation.y += dt * 1.2;
+                u.rotation.z = Math.sin(u.userData.theta * 2) * 0.12;
+                // Pulse halo and flash enemy ring
+                if (u.userData.halo) {
+                    u.userData.halo.material.opacity = 0.13 + Math.sin(time * 4 + u.userData.wobble) * 0.1;
+                    u.userData.halo.scale.setScalar(1 + Math.sin(time * 2.5 + u.userData.wobble) * 0.07);
+                }
+                if (u.userData.enemyRing) {
+                    u.userData.enemyRing.material.opacity = 0.7 + Math.sin(time * 6 + u.userData.wobble + 1.5) * 0.25;
+                }
+            });
+            // Wave clear: +2 UFOs per wave; at 20 cap speed instead
+            if (ufos.length === 0 && ufoScore > 0 && ufoCountdown > 0) {
+                ufoWave++;
+                ufoCountdown = 10;
+                ufoCountdownEl.style.color = '#ff4400';
+                const rawSize = 3 + ufoWave * 2;
+                const waveSize = Math.min(UFO_MAX, rawSize);
+                const hitCap = rawSize >= UFO_MAX;
+                if (hitCap) ufoSpeedMult *= 1.5;
+                for (let i = 0; i < waveSize; i++) {
+                    const u = createUFO();
+                    u.userData.speed *= ufoSpeedMult;
+                    scene.add(u); ufos.push(u);
+                }
+                const label = hitCap ? `⚡ WAVE ${ufoWave + 1}! MAX UFOs — SPEED ×${ufoSpeedMult.toFixed(1)}!` : `⚡ WAVE ${ufoWave + 1}! ${waveSize} UFOs!`;
+                statusEl.innerHTML = `<span style="color:#ff8800;font-size:13px;letter-spacing:4px;text-shadow:0 0 16px #ff8800">${label}</span>`;
+                flashEl.style.transition = 'opacity 0.04s'; flashEl.style.opacity = '0.18';
+                setTimeout(() => { flashEl.style.transition = 'opacity 0.4s'; flashEl.style.opacity = '0'; }, 70);
+                // From wave 5 onward, add evil kiwis (persistent between waves, +1 each wave)
+                if (ufoWave >= 4) {
+                    const ekCount = 3 + (ufoWave - 4);
+                    for (let i = 0; i < ekCount; i++) { const ek = createEvilKiwi(); scene.add(ek); evilKiwis.push(ek); }
+                    if (ufoWave === 4) statusEl.innerHTML = `<span style="color:#ff2200;font-size:13px;letter-spacing:3px;text-shadow:0 0 18px #ff0000">👾 EVIL KIWIS APPEAR! WAVE ${ufoWave + 1}</span>`;
+                }
+            }
         }
+
+        // Evil kiwi movement — layered sinusoids mimic Perlin-noise wandering
+        evilKiwis.forEach(ek => {
+            const d = ek.userData;
+            const theta = time * d.f1 + d.p1
+                + Math.sin(time * d.f2 + d.p2) * 1.4
+                + Math.sin(time * d.f3 + d.p3) * 0.7;
+            const phi = Math.sin(time * d.f4 + d.p4) * 0.45;
+            const r = d.baseR + Math.sin(time * d.f2 + d.p1) * 1.0;
+            ek.position.set(
+                r * Math.cos(theta) * Math.cos(phi),
+                r * Math.sin(phi) * 1.6 + Math.sin(time * d.f1 + d.p3) * 0.6,
+                r * Math.sin(theta) * Math.cos(phi)
+            );
+            ek.rotation.y += dt * 2.2;
+            ek.rotation.x = Math.sin(time * d.f2 + d.p2) * 0.4;
+            if (d.halo) d.halo.material.opacity = 0.15 + Math.sin(time * 5 + d.p1) * 0.1;
+        });
+
+        // Plasma wave rings expand outward then fade
+        for (let i = plasmaWaves.length - 1; i >= 0; i--) {
+            const pw = plasmaWaves[i];
+            pw.t += dt;
+            const et = Math.max(0, pw.t - pw.delay);
+            const s = 1 + et * 14;
+            pw.ring.scale.set(s, s, s);
+            pw.mat.opacity = Math.max(0, 1 - et * 1.1);
+            if (pw.mat.opacity <= 0) {
+                scene.remove(pw.ring);
+                pw.ring.geometry.dispose(); pw.mat.dispose();
+                plasmaWaves.splice(i, 1);
+            }
+        }
+
+        if (ufoGamePhase === 'feeding') {
+            kiwi.rotation.y += dt * (0.7 + kiwiRadiation * 2.5);
+            kiwi.position.y = -1.5 + Math.sin(time * 1.6) * 0.2;
+            // Grow and throb more intensely with each fed cake
+            const baseS = 0.9 + kiwiRadiation * 1.1;
+            kiwi.scale.setScalar(baseS + Math.sin(time * (3 + kiwiRadiation * 8)) * kiwiRadiation * 0.09);
+            // Emissive shifts from normal teal → radioactive green
+            bodyMat.emissive.setRGB(kiwiRadiation * 0.05, 0.07 + kiwiRadiation * 0.9, kiwiRadiation * 0.15);
+            crestMat.emissive.setRGB(0.44 * (1 - kiwiRadiation) + kiwiRadiation * 0.1,
+                                     0.13 * (1 - kiwiRadiation) + kiwiRadiation * 0.8,
+                                     0.44 * (1 - kiwiRadiation));
+            kiwiGlowLight.position.copy(kiwi.position);
+            kiwiGlowLight.distance = 14 + kiwi.scale.x * 6;
+            kiwiGlowLight.intensity = kiwiRadiation * 42 * (1 + Math.sin(time * (5 + kiwiRadiation * 10)) * 0.45);
+            // Quasar jets: appear from first cake, scale and whiten with size
+            if (kiwiRadiation >= 0.5) {
+                const _js = kiwi.scale.x;
+                const _jo = Math.min(0.82, (kiwiRadiation - 0.5) * 0.15);
+                const _wh = Math.min(1, (kiwiRadiation - 0.5) * 0.11);
+                kiwiJetN.visible = kiwiJetS.visible = true;
+                kiwiJetN.position.set(kiwi.position.x, kiwi.position.y + _js * 11, kiwi.position.z);
+                kiwiJetS.position.set(kiwi.position.x, kiwi.position.y - _js * 11, kiwi.position.z);
+                kiwiJetN.scale.setScalar(_js); kiwiJetS.scale.setScalar(_js);
+                [jetMatN, jetMatS].forEach(m => {
+                    m.opacity = _jo;
+                    m.color.setRGB(0.1 + _wh * 0.9, 1.0, 0.2 + _wh * 0.8);
+                });
+            }
+            // Lens activates only after 20 cakes (kiwiRadiation >= 2)
+            const _lensRad = Math.max(0, kiwiRadiation - 2.0);
+            if (_lensRad > 0) {
+                const _np = kiwi.position.clone().project(camera);
+                lensPass.uniforms.center.value.set(_np.x * 0.5 + 0.5, _np.y * 0.5 + 0.5);
+                lensPass.uniforms.strength.value = Math.min(0.15, _lensRad * 0.025);
+                const _camDist = camera.position.distanceTo(kiwi.position);
+                const _fovT = Math.tan(camera.fov * Math.PI / 360);
+                // innerR computed from actual projected body size so exclusion always covers kiwimon
+                lensPass.uniforms.innerR.value   = Math.min(0.42, (kiwi.scale.x * 2.1) / (_camDist * _fovT * 2.0));
+                lensPass.uniforms.radius.value   = Math.min(0.55, 0.14 + kiwi.scale.x * 0.018);
+            } else {
+                lensPass.uniforms.strength.value = 0;
+            }
+        } else {
+            kiwiGlowLight.intensity = 0;
+            lensPass.uniforms.strength.value = 0;
+            jetMatN.opacity = 0; jetMatS.opacity = 0;
+            kiwiJetN.visible = kiwiJetS.visible = false;
+        }
+
+        // Animate laser beams
+        for (let i = activeLasers.length - 1; i >= 0; i--) {
+            const l = activeLasers[i];
+            l.life -= dt * 5.5;
+            l.mat.opacity = Math.max(0, l.life);
+            l.mat2.opacity = Math.max(0, l.life * 0.45);
+            if (l.life <= 0) {
+                scene.remove(l.line); scene.remove(l.line2);
+                l.geo.dispose(); l.mat.dispose(); l.mat2.dispose();
+                activeLasers.splice(i, 1);
+            }
+        }
+
+        // Animate explosion particles
+        for (let i = ufoExplosions.length - 1; i >= 0; i--) {
+            const ex = ufoExplosions[i];
+            ex.t += dt;
+            const pa = ex.geo.attributes.position.array;
+            for (let j = 0; j < ex.velocities.length; j++) {
+                const v = ex.velocities[j];
+                if (v.life > 0) {
+                    pa[j*3] += v.x; pa[j*3+1] += v.y; pa[j*3+2] += v.z;
+                    v.x *= 0.96; v.y *= 0.96; v.z *= 0.96;
+                    v.life -= dt * 1.5;
+                }
+            }
+            ex.geo.attributes.position.needsUpdate = true;
+            ex.mat.opacity = Math.max(0, 1 - ex.t * 1.3);
+            ex.exLight.intensity = Math.max(0, 40 * Math.exp(-ex.t * 5));
+            if (ex.t > 1.5) {
+                scene.remove(ex.pts); scene.remove(ex.exLight);
+                ex.geo.dispose(); ex.mat.dispose();
+                ufoExplosions.splice(i, 1);
+            }
+        }
+
+        // Animate collected cheesecakes — pop in at orbit position, then float
+        collectedCakes.forEach(cake => {
+            if (cake.userData.fed || cake.userData.dragging) return;
+            cake.userData.emergeT += dt;
+            const emerge = Math.min(1, cake.userData.emergeT * 2.2); // fast pop-in (~0.45s)
+            const bs = cake.userData.baseScale || 0.55;
+            if (emerge < 1) {
+                // Scale up in place at orbit position — always visible, never inside BH
+                const s = bs * (emerge < 0.5 ? emerge * 2 : 1 - (emerge - 0.5) * 0.4 + 0.4);
+                cake.scale.setScalar(Math.max(0.01, s) * 1.1); // slight overshoot then settle
+                cake.rotation.y += dt * 4;
+            } else {
+                // Expand orbit so cakes never clip into a growing kiwimon
+                if (ufoGamePhase === 'feeding') {
+                    const minR = kiwi.scale.x * 1.65 + 1.5;
+                    if (cake.userData.orbitR < minR) cake.userData.orbitR += dt * 4;
+                }
+                cake.userData.orbitAngle += dt * cake.userData.orbitSpeed;
+                cake.position.set(
+                    cake.userData.orbitR * Math.cos(cake.userData.orbitAngle),
+                    cake.userData.orbitY + Math.sin(time * 1.4 + cake.userData.orbitAngle) * 0.12,
+                    cake.userData.orbitR * Math.sin(cake.userData.orbitAngle)
+                );
+                cake.rotation.y += dt * 0.6;
+                cake.scale.setScalar(bs);
+            }
+        });
+        // Transition to egg is now triggered by finishMinigameAndContinue()
     }
 
     // ── EGG ──────────────────────────────────────────────────────────────────
@@ -1068,6 +1962,7 @@ function animate(t) {
             comboEl.style.opacity = '0';
             btnEl.textContent = '🔄 RESTART';
             btnEl.style.pointerEvents = 'auto';
+            setTimeout(() => showLeaderboard(), 2200);
         }
     }
 
@@ -1084,10 +1979,256 @@ function animate(t) {
         cookieAuraMat.opacity = .14 + Math.sin(cookieT * 2.5) * .07;
     }
 
-    renderer.render(scene, camera);
+    // Splash cakes fly outward and fade
+    for (let i = splashCakes.length - 1; i >= 0; i--) {
+        const sc = splashCakes[i];
+        sc.userData.life -= dt * 0.25;
+        sc.userData.vel.y -= dt * 0.018;
+        sc.userData.vel.multiplyScalar(0.975);
+        sc.position.addScaledVector(sc.userData.vel, 1);
+        sc.rotation.y += dt * sc.userData.spin;
+        sc.rotation.x += dt * sc.userData.spin * 0.4;
+        sc.scale.setScalar(Math.max(0.001, (sc.userData.baseScale || 0.55) * sc.userData.life));
+        if (sc.userData.life <= 0) { scene.remove(sc); splashCakes.splice(i, 1); }
+    }
+
+    composer.render();
 }
 
 requestAnimationFrame(animate);
+
+// ── WEB AUDIO ────────────────────────────────────────────────────────────────
+let _actx = null;
+function _getActx() {
+    if (!_actx) _actx = new (window.AudioContext || window.webkitAudioContext)();
+    if (_actx.state === 'suspended') _actx.resume();
+    return _actx;
+}
+function playPop(startHz = 660, endHz = 180, dur = 0.07) {
+    try {
+        const ctx = _getActx(), t = ctx.currentTime;
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(startHz, t);
+        osc.frequency.exponentialRampToValueAtTime(endHz, t + dur);
+        gain.gain.setValueAtTime(0.22, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + dur + 0.015);
+        osc.start(t); osc.stop(t + dur + 0.02);
+    } catch(e) {}
+}
+function playNom() {
+    try {
+        const ctx = _getActx(), t = ctx.currentTime;
+        const o1 = ctx.createOscillator(), g1 = ctx.createGain();
+        o1.connect(g1); g1.connect(ctx.destination);
+        o1.type = 'triangle';
+        o1.frequency.setValueAtTime(380, t);
+        o1.frequency.exponentialRampToValueAtTime(90, t + 0.13);
+        g1.gain.setValueAtTime(0.32, t);
+        g1.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+        o1.start(t); o1.stop(t + 0.16);
+        const o2 = ctx.createOscillator(), g2 = ctx.createGain();
+        o2.connect(g2); g2.connect(ctx.destination);
+        o2.type = 'sine';
+        o2.frequency.setValueAtTime(760, t + 0.01);
+        o2.frequency.exponentialRampToValueAtTime(180, t + 0.1);
+        g2.gain.setValueAtTime(0.14, t + 0.01);
+        g2.gain.exponentialRampToValueAtTime(0.001, t + 0.11);
+        o2.start(t + 0.01); o2.stop(t + 0.13);
+    } catch(e) {}
+}
+
+function playBoom() {
+    try {
+        const ctx = _getActx(), t = ctx.currentTime;
+        const osc = ctx.createOscillator(), g = ctx.createGain();
+        osc.connect(g); g.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(90, t);
+        osc.frequency.exponentialRampToValueAtTime(18, t + 0.45);
+        g.gain.setValueAtTime(0.55, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+        osc.start(t); osc.stop(t + 0.52);
+        // Noise layer for explosion crunch
+        const len = Math.ceil(ctx.sampleRate * 0.35);
+        const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        const flt = ctx.createBiquadFilter();
+        flt.type = 'lowpass'; flt.frequency.value = 900;
+        const gn = ctx.createGain();
+        src.connect(flt); flt.connect(gn); gn.connect(ctx.destination);
+        gn.gain.setValueAtTime(0.35, t);
+        gn.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+        src.start(t); src.stop(t + 0.36);
+    } catch(e) {}
+}
+
+function playSplash() {
+    try {
+        const ctx = _getActx(), t = ctx.currentTime;
+        [523, 659, 784, 1047, 1319].forEach((f, i) => {
+            const st = t + i * 0.045;
+            const o = ctx.createOscillator(), g = ctx.createGain();
+            o.connect(g); g.connect(ctx.destination);
+            o.type = 'sine';
+            o.frequency.setValueAtTime(f, st);
+            o.frequency.exponentialRampToValueAtTime(f * 0.45, st + 0.07);
+            g.gain.setValueAtTime(0.14, st);
+            g.gain.exponentialRampToValueAtTime(0.001, st + 0.08);
+            o.start(st); o.stop(st + 0.09);
+        });
+    } catch(e) {}
+}
+
+// ── 8-BIT BATTLE BGM ─────────────────────────────────────────────────────
+let _bgmActive = false, _bgmTimer = null, _bgmGain = null, _bgmNoise = null;
+const _BGM_E = 60 / 155 / 2; // eighth note at 155 BPM
+const _BGM_MEL  = [523,784,659,784,523,880,784,698, 659,784,880,1047,988,880,784,659];
+const _BGM_BASS = [131,131, 98, 98,131,131, 87, 87, 131,131, 98,  98,131,131, 87, 87];
+
+function _bgmGainNode(ctx) {
+    if (!_bgmGain) { _bgmGain = ctx.createGain(); _bgmGain.gain.value = 0; _bgmGain.connect(ctx.destination); }
+    return _bgmGain;
+}
+function _bgmNoiseBuffer(ctx) {
+    if (!_bgmNoise) {
+        const len = Math.ceil(ctx.sampleRate * 0.5);
+        _bgmNoise = ctx.createBuffer(1, len, ctx.sampleRate);
+        const d = _bgmNoise.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    }
+    return _bgmNoise;
+}
+function _bgmNote(ctx, dest, f, t, dur, vol=0.055, type='square') {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.connect(g); g.connect(dest); o.type = type; o.frequency.value = f;
+    g.gain.setValueAtTime(vol, t); g.gain.setValueAtTime(vol*0.7, t+dur*0.65);
+    g.gain.linearRampToValueAtTime(0, t+dur); o.start(t); o.stop(t+dur+0.005);
+}
+function _bgmKick(ctx, dest, t) {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.connect(g); g.connect(dest); o.type = 'sine';
+    o.frequency.setValueAtTime(160, t); o.frequency.exponentialRampToValueAtTime(38, t+0.1);
+    g.gain.setValueAtTime(0.32, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.13);
+    o.start(t); o.stop(t+0.14);
+}
+function _bgmSnare(ctx, dest, t) {
+    const src = ctx.createBufferSource(), flt = ctx.createBiquadFilter(), g = ctx.createGain();
+    src.buffer = _bgmNoiseBuffer(ctx);
+    src.connect(flt); flt.connect(g); g.connect(dest);
+    flt.type = 'bandpass'; flt.frequency.value = 2800; flt.Q.value = 0.8;
+    g.gain.setValueAtTime(0.18, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.08);
+    src.start(t); src.stop(t+0.09);
+}
+function _bgmHat(ctx, dest, t) {
+    const src = ctx.createBufferSource(), flt = ctx.createBiquadFilter(), g = ctx.createGain();
+    src.buffer = _bgmNoiseBuffer(ctx);
+    src.connect(flt); flt.connect(g); g.connect(dest);
+    flt.type = 'highpass'; flt.frequency.value = 9000;
+    g.gain.setValueAtTime(0.022, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.022);
+    src.start(t); src.stop(t+0.025);
+}
+function _bgmLoop() {
+    if (!_bgmActive) return;
+    try {
+        const ctx = _getActx(), dest = _bgmGainNode(ctx), now = ctx.currentTime, e = _BGM_E;
+        _BGM_MEL.forEach((f,i)  => _bgmNote(ctx, dest, f, now+i*e, e*0.82));
+        _BGM_BASS.forEach((f,i) => _bgmNote(ctx, dest, f, now+i*e, e*1.5, 0.06));
+        for (let i = 0; i < 16; i++) {
+            const t = now + i*e;
+            if (i%4===0) _bgmKick(ctx, dest, t);
+            else if (i%4===2) _bgmSnare(ctx, dest, t);
+            _bgmHat(ctx, dest, t);
+        }
+        _bgmTimer = setTimeout(_bgmLoop, (16*e - 0.08)*1000);
+    } catch(e2) {}
+}
+function startBattleMusic() {
+    if (_bgmActive) return;
+    _bgmActive = true;
+    try {
+        const ctx = _getActx(), g = _bgmGainNode(ctx), now = ctx.currentTime;
+        g.gain.cancelScheduledValues(now); g.gain.setValueAtTime(0, now);
+        g.gain.linearRampToValueAtTime(0.5, now + 0.6);
+    } catch(e) {}
+    _bgmLoop();
+}
+function stopBattleMusic() {
+    _bgmActive = false;
+    clearTimeout(_bgmTimer); _bgmTimer = null;
+    try {
+        const ctx = _getActx(), g = _bgmGainNode(ctx), now = ctx.currentTime;
+        g.gain.cancelScheduledValues(now); g.gain.setValueAtTime(g.gain.value, now);
+        g.gain.linearRampToValueAtTime(0, now + 0.5);
+    } catch(e) {}
+}
+
+function kiwimonMass(rad) {
+    // Exponential mass scale: 1.5 kg at rad=0, each unit ≈ ×10,000
+    const kg = rad <= 0 ? 1.5 : 1.5 * Math.pow(10, rad * 4);
+    const S = 1.989e30, E = 5.972e24, J = 1.898e27; // solar, earth, jupiter mass in kg
+    if (kg < 1e3)        return `${kg.toFixed(1)} kg`;
+    if (kg < 1e6)        return `${(kg/1e3).toFixed(1)} t`;
+    if (kg < 1e9)        return `${(kg/1e6).toFixed(1)} kt`;
+    if (kg < 1e12)       return `${(kg/1e9).toFixed(1)} Mt  ☄ asteroid class`;
+    if (kg < E * 0.01)   return `${(kg/1e12).toFixed(1)} Gt  ☄ dwarf planet`;
+    if (kg < E)          return `${(kg/E*100).toFixed(3)}% M⊕  🌍 sub-planetary`;
+    if (kg < J)          return `${(kg/E).toFixed(2)} M⊕  🌍 planetary`;
+    if (kg < S * 0.08)   return `${(kg/J).toFixed(3)} MJ  🪐 gas giant`;
+    if (kg < S * 0.5)    return `${(kg/S).toFixed(4)} M☉  🌟 sub-stellar`;
+    if (kg < S * 3)      return `${(kg/S).toFixed(3)} M☉  ★ stellar`;
+    if (kg < S * 25)     return `${(kg/S).toFixed(1)} M☉  ⚫ stellar BH`;
+    if (kg < S * 1e4)    return `${(kg/S).toExponential(2)} M☉  ⚫ intermediate BH`;
+    if (kg < S * 1e7)    return `${(kg/S/1e6).toFixed(3)}×10⁶ M☉  ⚫ supermassive BH`;
+    if (kg < S * 1e10)   return `${(kg/S/1e9).toFixed(2)}×10⁹ M☉  ⚫ quasar`;
+    return                `${(kg/S/1e12).toFixed(1)}×10¹² M☉  ⚫ COSMIC GOD`;
+}
+
+function showLeaderboard() {
+    const pts = ufoScore * 100 + (ufoWave + 1) * 500 + cakesEatenTotal * 50 + preBattleCombo * 10;
+    const mass = kiwimonMass(cakesEatenTotal * 0.1);
+    let scores = [];
+    try { scores = JSON.parse(localStorage.getItem('kiwimon_lb') || '[]'); } catch(e) {}
+    const entry = { score: pts, ufos: ufoScore, waves: ufoWave + 1, cakes: cakesEatenTotal, combo: preBattleCombo, mass };
+    scores.push(entry);
+    scores.sort((a, b) => b.score - a.score);
+    const rank = scores.indexOf(entry) + 1;
+    scores = scores.slice(0, 5);
+    try { localStorage.setItem('kiwimon_lb', JSON.stringify(scores)); } catch(e) {}
+    const lbEl = document.getElementById('leaderboard');
+    lbEl.innerHTML = `
+        <h2>⚡ BATTLE RESULTS ⚡</h2>
+        <div class="lb-cur">
+            <div class="lb-rank-tag">${rank === 1 ? '🏆 NEW RECORD!' : `RANK #${rank}`}</div>
+            <div class="lb-score-big">${pts.toLocaleString()} PTS</div>
+            <div class="lb-stat"><span>WAVES SURVIVED</span><span>${ufoWave + 1}</span></div>
+            <div class="lb-stat"><span>ENEMIES DEFEATED</span><span>${ufoScore}</span></div>
+            <div class="lb-stat"><span>CAKES FED</span><span>${cakesEatenTotal}</span></div>
+            <div class="lb-stat"><span>PRE-BATTLE COMBO</span><span>×${preBattleCombo}</span></div>
+            <div class="lb-stat" style="margin-top:7px;padding-top:7px;border-top:1px solid #ff44ff22">
+                <span style="color:#00ffcc">KIWIMON FINAL MASS</span>
+                <span style="color:#00ffcc;text-shadow:0 0 8px #00ffcc">${mass}</span>
+            </div>
+        </div>
+        <div class="lb-sec">TOP SCORES</div>
+        ${scores.map((r, i) => `
+            <div class="lb-row${i === rank - 1 && rank <= 5 ? ' you' : ''}">
+                <span class="lb-pos">${['🥇','🥈','🥉','4.','5.'][i]}</span>
+                <span class="lb-pts">${r.score.toLocaleString()}</span>
+                <span class="lb-detail" style="flex:none">${r.mass ? r.mass.split('  ')[0] : `${r.cakes}🍰`}</span>
+                ${i === rank - 1 && rank <= 5 ? '<span class="lb-you-tag">YOU</span>' : ''}
+            </div>`).join('')}
+    `;
+    lbEl.classList.add('visible');
+}
+
+function hideLeaderboard() {
+    document.getElementById('leaderboard').classList.remove('visible');
+}
 
 // intro digivolution burst after 1.5s
 setTimeout(() => triggerBurst(), 1500);
